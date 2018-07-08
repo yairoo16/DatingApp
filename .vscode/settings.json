@@ -1,3 +1,6 @@
-{
+[{
     "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe"
-}
+},
+{
+    "terminal.integrated.shell.windows1": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+}]
