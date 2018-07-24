@@ -1,105 +1,40 @@
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
-import { map, catchError} from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
-@Injectable()
+
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
     baseUrl = 'http://localhost:5000/api/auth/';
-    userToken: any;
+    jwtHelper = new JwtHelperService();
+    decodedToken: any;
 
-    constructor(private http: Http) {}
+    constructor(private http: HttpClient) {}
 
-    login(model: any) {
-        return this.http.post(this.baseUrl + 'login', model, this.requestOptions()).pipe(map((response: Response) => {
-            const user = response.json();
-            if (user) {
-                localStorage.setItem('token', user.tokenString);
-                this.userToken = user.tokenString;
-            }
-        }), catchError(this.handleError));
-    }
+  login(model: any) {
+    return this.http
+      .post(this.baseUrl + 'login', model)
+      .pipe(
+        map((response: any) => {
+          const user = response;
+          if (user) {
+            localStorage.setItem('token', user.token);
+            this.decodedToken = this.jwtHelper.decodeToken(user.token);
+            console.log(this.decodedToken);
+          }
+        })
+    );
+  }
 
-    register(model: any) {
-        return this.http.post(this.baseUrl + 'register', model, this.requestOptions()).pipe(catchError(this.handleError));
-    }
+  register(model: any) {
+    return this.http.post(this.baseUrl + 'register', model);
+  }
 
-    private requestOptions() {
-        const headers = new Headers({'Content-type' : 'application/json'});
-        return new RequestOptions({ headers: headers});
-    }
-
-    private handleError(error: any) {
-        const applicationError = error.headers.get('Application-Error');
-        if (applicationError) {
-            return throwError(applicationError);
-        }
-        const serverError = error.json();
-        let modelStateErrors = '';
-        if (serverError) {
-            for (const key in serverError) {
-                if (serverError[key]) {
-                    modelStateErrors += serverError[key] + '\n';
-                }
-            }
-        }
-        return throwError(
-            modelStateErrors || 'Server error'
-        );
-    }
+  loggedIn() {
+    const token = localStorage.getItem('token');
+    return !this.jwtHelper.isTokenExpired(token);
+  }
 }
-// import { map, catchError } from 'rxjs/operators';
-// import { Http, Headers, RequestOptions, Response } from '@angular/http';
-// import { Injectable } from '@angular/core';
-// import { Observable, throwError } from 'rxjs';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class AuthService {
-//   baseUrl = 'http://localhost:5000/api/auth/';
-//   userToken: any;
-
-// constructor(private http: Http) { }
-
-// login(model: any) {
-//   return this.http.post(this.baseUrl + 'login', model, this.requestOptions()).pipe(map(
-//     (response: Response) => {
-//     const user = response.json();
-//     if (user){
-//       localStorage.setItem('token', user.tokenString);
-//       this.userToken = user.tokenString;
-//     }
-//   }), catchError(this.handleError));
-// }
-
-// register(model: any) {
-//   return this.http.post(this.baseUrl + 'register', model, this.requestOptions()).pipe(catchError(this.handleError));
-// }
-
-// private requestOptions(){
-//   const headers = new Headers({'Content-type' : 'application/json'});
-//   return new RequestOptions({headers: headers});
-
-// }
-
-// private handleError(error: any) {
-//   const applicationError = error.headers.get('Application-Error');
-//   if (applicationError) {
-//     return Observable.throw(applicationError);
-//   }
-//   const serverError = error.json();
-//   let modelStateErrors = '';
-//   if (serverError) {
-//     for (const key in serverError) {
-//       if (serverError[key]) {
-//         modelStateErrors += serverError[key] + '\n';
-//       }
-//     }
-//   }
-//   return Observable.throw(
-//     modelStateErrors || 'Server error'
-//   );
-// }
-
-// }
