@@ -1,3 +1,4 @@
+import { UserService } from './service/user.service';
 import { AuthService } from './service/auth.service';
 import { FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,11 +14,18 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './service/error.interceptor';
 import { AlertifyService } from './service/alertify.service';
-import { MemberListComponent } from './member-list/member-list.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { appRoutes } from './routes';
 import { AuthGuard } from './guards/auth.guard';
+import { MemberCardComponent } from './members/member-card/member-card.component';
+import { JwtModule } from '../../node_modules/@auth0/angular-jwt';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+
+export function tokenGetter() {
+    return localStorage.getItem('token');
+}
 
 @NgModule({
    declarations: [
@@ -26,8 +34,10 @@ import { AuthGuard } from './guards/auth.guard';
       HomeComponent,
       RegisterComponent,
       MemberListComponent,
+      MemberCardComponent,
       ListsComponent,
-      MessagesComponent
+      MessagesComponent,
+      MemberDetailComponent
    ],
    imports: [
       BrowserModule,
@@ -35,13 +45,21 @@ import { AuthGuard } from './guards/auth.guard';
       HttpModule,
       FormsModule,
       BsDropdownModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      JwtModule.forRoot({
+          config: {
+              tokenGetter: tokenGetter,
+              whitelistedDomains: ['localhost:5000'],
+              blacklistedRoutes: ['localhost:5000/api/auth']
+          }
+      })
    ],
    providers: [
       AuthService,
       ErrorInterceptorProvider,
       AlertifyService,
-      AuthGuard
+      AuthGuard,
+      UserService
    ],
    bootstrap: [
       AppComponent
