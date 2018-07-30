@@ -2,7 +2,7 @@ import { UserService } from '../../service/user.service';
 import { Component, OnInit } from '@angular/core';
 import { AlertifyService } from '../../service/alertify.service';
 import { User } from '../../models/user';
-import { ActivatedRoute } from '../../../../node_modules/@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-member-list',
