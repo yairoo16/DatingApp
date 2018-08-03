@@ -41,7 +41,7 @@ namespace DatingApp.API.Controllers
             return Ok(userToReturn);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}", Name = "GetUser")]
         public async Task<IActionResult> UpdateUser(int id, UserForUpdateDTO userForUpdateDTO)
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
