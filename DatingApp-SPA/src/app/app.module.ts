@@ -30,6 +30,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberListResolver } from './resolvers/member-list.resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { TimeAgoPipe } from 'time-ago-pipe';
 
 export function tokenGetter() {
     return localStorage.getItem('token');
@@ -47,7 +48,8 @@ export function tokenGetter() {
       MessagesComponent,
       MemberDetailComponent,
       MemberEditComponent,
-      PhotoEditorComponent
+      PhotoEditorComponent,
+      TimeAgoPipe
    ],
    imports: [
       BrowserModule,
