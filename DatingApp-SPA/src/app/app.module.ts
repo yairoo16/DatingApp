@@ -31,6 +31,7 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { MemberListResolver } from './resolvers/member-list.resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
+import { ListsResolver } from './resolvers/lists.resolver';
 
 export function tokenGetter() {
     return localStorage.getItem('token');
@@ -82,7 +83,8 @@ export function tokenGetter() {
       MemberDetailResolver,
       MemberListResolver,
       MemberEditResolver,
-      PreventUnsavedChanges
+      PreventUnsavedChanges,
+      ListsResolver
    ],
    bootstrap: [
       AppComponent
