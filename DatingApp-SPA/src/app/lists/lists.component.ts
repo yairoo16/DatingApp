@@ -3,7 +3,7 @@ import { Pagination, PaginatedResult } from '../models/pagination';
 import { User } from '../models/user';
 import { AuthService } from '../service/auth.service';
 import { UserService } from '../service/user.service';
-import { ActivatedRoute } from '../../../node_modules/@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from '../service/alertify.service';
 
 @Component({

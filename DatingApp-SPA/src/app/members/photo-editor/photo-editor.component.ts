@@ -1,6 +1,6 @@
-import { AlertifyService } from './../../service/alertify.service';
-import { UserService } from './../../service/user.service';
-import { Photo } from './../../models/photo';
+import { AlertifyService } from '../../service/alertify.service';
+import { UserService } from '../../service/user.service';
+import { Photo } from '../../models/photo';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { environment } from '../../../environments/environment';

@@ -45,6 +45,8 @@ namespace DatingApp.API.Controllers
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
+
+            messageParams.UserId = userId;
             
             var messagesFromRepo = await _repo.GetMessagesForUser(messageParams);
 
@@ -80,6 +82,19 @@ namespace DatingApp.API.Controllers
                 return CreatedAtRoute("GetMessage", new {id = message.Id}, messageToReturn);
 
             throw new Exception("Creating the message failed on save");
+        }
+
+        [HttpGet("thread/{recipientId}")]
+        public async Task<IActionResult> GetMessageThread(int userId, int recipientId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var messageFromRepo = await _repo.GetMessageThread(userId, recipientId);
+
+            var messageThread = _mapper.Map<IEnumerable<MessageToReturnDTO>>(messageFromRepo);
+
+            return Ok(messageThread);
         }
     }
 }
